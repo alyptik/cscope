@@ -30,6 +30,9 @@
  DAMAGE. 
  =========================================================================*/
 
+/* $Id: scanner.h,v 1.5 2009/08/28 14:28:27 nhorman Exp $ */
+
+
 #ifndef CSCOPE_SCANNER_H
 #define CSCOPE_SCANNER_H
 

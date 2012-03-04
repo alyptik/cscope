@@ -45,21 +45,21 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-/* convert long to a string in base BASE notation */
-#define	ltobase(value)                     \
-do {                                       \
-	n = (value);                       \
-	s = buf + (sizeof(buf) - 1);       \
-	*s = '\0';                         \
-	digits = 1;                        \
-	while (n >= BASE) {                \
-		++digits;                  \
-		i = n;                     \
-		n /= BASE;                 \
-		*--s = i - n * BASE + '!'; \
-	}                                  \
-	*--s = n + '!';                    \
-} while (0)
+static char const rcsid[] = "$Id: crossref.c,v 1.15 2009/08/28 14:28:27 nhorman Exp $";
+
+
+/* convert long to a string */
+#define	ltobase(value)	n = value; \
+			s = buf + (sizeof(buf) - 1); \
+			*s = '\0'; \
+			digits = 1; \
+			while (n >= BASE) { \
+				++digits; \
+				i = n; \
+				n /= BASE; \
+				*--s = i - n * BASE + '!'; \
+			} \
+			*--s = n + '!';
 
 #define	SYMBOLINC	20	/* symbol list size increment */
 
