@@ -168,6 +168,7 @@ find_symbol_or_assignment(char *pattern, BOOL assign_flag)
 	size_t	s_len = 0;
 	char firstchar;		/* first character of a potential symbol */
 	BOOL fcndef = NO;
+	BOOL assignment = NO;
 
 	if ((invertedindex == YES) && (assign_flag == NO)) {
 		long	lastline = 0;
@@ -253,6 +254,10 @@ find_symbol_or_assignment(char *pattern, BOOL assign_flag)
 			case INCLUDE:			/* #include file */
 				goto notmatched;	/* don't match name */
 			
+			case ASSIGN:
+				assignment = YES;
+				/* FALLTHROUGH */
+
 			default:		/* other symbol */
 				s = symbol;
 				s_len = sizeof(symbol);
@@ -323,9 +328,10 @@ find_symbol_or_assignment(char *pattern, BOOL assign_flag)
 				/* if the assignment flag is set then
 				 * we are looking for assignments and
 				 * some extra filtering is needed */
-				if(assign_flag == YES
-				  && ! check_for_assignment())
-				       goto notmatched;
+				if (assign_flag == YES
+					&& assignment == NO
+					&& ! check_for_assignment())
+						goto notmatched;
 
 
 				/* output the file, function or macro, and source line */
@@ -345,6 +351,7 @@ find_symbol_or_assignment(char *pattern, BOOL assign_flag)
 				return NULL;
 			}
 			fcndef = NO;
+			assignment = NO;
 			cp = blockp;
 		}
 	}
